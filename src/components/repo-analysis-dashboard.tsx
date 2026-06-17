@@ -1,11 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import type { RepositoryAnalysisDetails } from "@/lib/repo-analysis.types";
 import {
   calculateRiskLevel,
   fetchRepoDetails,
 } from "@/lib/repo-analysis.utils";
+
+/**
+ * Produces a stable React list key for an AI smell badge.
+ * Index is included so duplicate smell labels do not collide.
+ */
+function getAiSmellBadgeKey(smell: string, index: number): string {
+  return `ai-smell-${index}-${smell}`;
+}
+
+/**
+ * Renders AI smell strings as red warning badges for the analysis card.
+ * Returns null when there are no smells so the badge row stays empty and uncluttered.
+ */
+function renderAiSmellBadges(smells: string[]): ReactNode {
+  if (smells.length === 0) {
+    return null;
+  }
+
+  return smells.map((smell, index) => (
+    <span
+      key={getAiSmellBadgeKey(smell, index)}
+      className="warning-badge"
+    >
+      {smell}
+    </span>
+  ));
+}
 
 export function RepoAnalysisDashboard() {
   const [repoDetails, setRepoDetails] =
@@ -99,10 +126,7 @@ export function RepoAnalysisDashboard() {
           <div className="smells-panel">
             <h3>AI Smells</h3>
             <div className="badge-row">
-              {/* TODO Intern 4: map aiSmells into red warning badges with JSDoc-documented rendering logic. */}
-              <span className="placeholder-badge">
-                {repoDetails.aiSmells.length} smells waiting to render
-              </span>
+              {renderAiSmellBadges(repoDetails.aiSmells)}
             </div>
           </div>
         ) : null}
