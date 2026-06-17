@@ -1,9 +1,7 @@
 ---
-description: Intern 4 rule for documented AI smell badge rendering
 globs: src/components/repo-analysis-dashboard.tsx
 alwaysApply: false
 ---
-
 # Intern 4: Docs and UI
 
 - Render every `aiSmells` item as a red warning badge.
