@@ -1,0 +1,13 @@
+---
+description: "Rules for generating test cases and assertion guards"
+globs: **/*.ts
+alwaysApply: false
+---
+# Code Verification & Assertion Specs
+- All metric extraction utilities must be accompanied by explicit test blocks or runtime assertions.
+- Every mathematical function must test bounds constraints (e.g., handling negative values, zero, or null arrays).
+- Include inline assertions checking that file pathways are valid before attempts to execute static analysis.
+
+
+
+
