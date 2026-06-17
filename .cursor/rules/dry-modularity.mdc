@@ -1,0 +1,9 @@
+---
+description: "Enforces Don't Repeat Yourself (DRY) structures and modular imports"
+globs: ["**/*.ts"]
+alwaysApply: false
+---
+# DRY Structural Profile
+- Avoid duplicating helper utilities (such as line counters or text sanitizers) within files.
+- Ensure all auxiliary data-mining operations are imported from central helper modules.
+- Check code imports to prevent duplicate declarations of modules.
