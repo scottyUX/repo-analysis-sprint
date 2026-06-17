@@ -1,0 +1,13 @@
+---
+description: Intern 5 rule for modern async await loading flows
+globs: src/components/repo-analysis-dashboard.tsx,src/lib/repo-analysis.utils.ts
+alwaysApply: false
+---
+
+# Intern 5: Async/Await
+
+- Prefer `async`/`await` over nested `.then()` chains in UI event handlers.
+- Set loading state before awaiting work.
+- Reset loading state in a `finally` block so failures cannot leave the button stuck.
+- Keep success, error, and cleanup paths easy to read.
+- Run the app and verify the button text changes while data loads.

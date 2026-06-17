@@ -1,0 +1,13 @@
+---
+description: Intern 3 rule for risk calculation unit tests
+globs: src/lib/repo-analysis.utils.ts,src/lib/repo-analysis.utils.test.ts
+alwaysApply: false
+---
+
+# Intern 3: Tests
+
+- Put risk scoring business logic in `calculateRiskLevel()`.
+- Cover `Low`, `Medium`, and `High` outcomes with unit tests.
+- Replace `it.todo()` placeholders with executable Vitest tests.
+- Test threshold boundaries, not only easy examples.
+- Run `npm test` before opening a PR.

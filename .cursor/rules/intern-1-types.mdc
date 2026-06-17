@@ -1,0 +1,13 @@
+---
+description: Intern 1 rule for strict repository analysis TypeScript types
+globs: src/lib/repo-analysis*.ts,src/components/repo-analysis-dashboard.tsx
+alwaysApply: false
+---
+
+# Intern 1: Strict Types
+
+- Do not use `any`.
+- Replace weak shapes like `Record<string, number>` with explicit nested interfaces.
+- Model `astMetrics` and `aiSmells` at every level the mock data exposes.
+- Export reusable types from `src/lib/repo-analysis.types.ts`.
+- Keep component props and helper signatures aligned with the exported types.

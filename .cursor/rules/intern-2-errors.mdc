@@ -1,0 +1,13 @@
+---
+description: Intern 2 rule for resilient repository fetch error handling
+globs: src/components/repo-analysis-dashboard.tsx,src/lib/repo-analysis.utils.ts
+alwaysApply: false
+---
+
+# Intern 2: Error Handling
+
+- Every async fetch path must handle failures with `try`/`catch` or an explicit `.catch()`.
+- Store user-facing failures in React error state instead of letting the UI crash.
+- Show the `Connection Failed` warning card when the simulated network request fails.
+- Clear stale errors before a new request starts.
+- Do not swallow errors silently; make the failure visible to users or tests.

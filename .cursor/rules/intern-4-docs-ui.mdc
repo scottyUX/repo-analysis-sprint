@@ -1,0 +1,13 @@
+---
+description: Intern 4 rule for documented AI smell badge rendering
+globs: src/components/repo-analysis-dashboard.tsx
+alwaysApply: false
+---
+
+# Intern 4: Docs and UI
+
+- Render every `aiSmells` item as a red warning badge.
+- Use a stable, readable React key for each mapped badge.
+- Add professional JSDoc to non-obvious rendering helpers.
+- Keep comments useful; explain intent, not obvious JSX mechanics.
+- Verify the UI still renders cleanly when the smell list is empty.
