@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { RepositoryAnalysisDetails } from "@/lib/repo-analysis.types";
+import { HealthBanner } from "@/components/health-banner";
 import {
   calculateRiskLevel,
   fetchRepoDetails,
@@ -49,6 +50,10 @@ export function RepoAnalysisDashboard() {
       </section>
 
       <section className="analysis-card" aria-live="polite">
+        {repoDetails && riskLevel ? (
+          <HealthBanner riskLevel={riskLevel} />
+        ) : null}
+
         <div className="card-header">
           <div>
             <p className="eyebrow">Repo Metrics</p>
