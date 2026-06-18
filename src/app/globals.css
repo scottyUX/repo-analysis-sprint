@@ -7,6 +7,15 @@
   --primary: #2447f9;
   --warning: #b42318;
   --warning-bg: #fff4ed;
+  --health-low: #3538cd;
+  --health-low-bg: #eef2ff;
+  --health-low-border: #c7d7fe;
+  --health-medium: #2447f9;
+  --health-medium-bg: #eff4ff;
+  --health-medium-border: #b2ccff;
+  --health-high: #b42318;
+  --health-high-bg: #fff4ed;
+  --health-high-border: #fecdca;
 }
 
 html {
@@ -150,6 +159,77 @@ button:disabled {
   background: var(--warning-bg);
   color: var(--warning);
   padding: 18px;
+}
+
+.health-banner {
+  display: grid;
+  gap: 6px;
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 24px;
+}
+
+.health-banner__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.health-banner strong {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.health-banner span:not(.health-banner__severity) {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.health-banner__severity {
+  border-radius: 999px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  padding: 8px 12px;
+  flex-shrink: 0;
+}
+
+.health-banner--low {
+  border: 1px solid var(--health-low-border);
+  background: var(--health-low-bg);
+  color: var(--health-low);
+}
+
+.health-banner--low .health-banner__severity {
+  background: var(--panel);
+  border: 1px solid var(--health-low-border);
+  color: var(--health-low);
+}
+
+.health-banner--medium {
+  border: 1px solid var(--health-medium-border);
+  background: var(--health-medium-bg);
+  color: var(--health-medium);
+}
+
+.health-banner--medium .health-banner__severity {
+  background: var(--panel);
+  border: 1px solid var(--health-medium-border);
+  color: var(--health-medium);
+}
+
+.health-banner--high {
+  border: 1px solid var(--health-high-border);
+  background: var(--health-high-bg);
+  color: var(--health-high);
+}
+
+.health-banner--high .health-banner__severity {
+  background: var(--panel);
+  border: 1px solid var(--health-high-border);
+  color: var(--health-high);
 }
 
 .metrics-grid {
