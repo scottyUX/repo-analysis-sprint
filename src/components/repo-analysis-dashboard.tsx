@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
-import type {
+import { useState, type CSSProperties, type ReactNode } from "react";import type {
   AiSmell,
   RepositoryAnalysisDetails,
   RiskLevel,
@@ -50,6 +49,22 @@ function renderAiSmellBadges(smells: AiSmell[]): ReactNode {
     </span>
   ));
 }
+
+/** Primary blue emphasis for risk-driver metric tiles (Complexity, Nesting Depth). */
+const primaryMetricTileStyle: CSSProperties = {
+  border: "1px solid var(--primary)",
+  background: "#eef2ff",
+};
+
+const primaryMetricLabelStyle: CSSProperties = {
+  color: "var(--primary)",
+  fontWeight: 700,
+};
+
+const primaryMetricValueStyle: CSSProperties = {
+  fontSize: "1.35rem",
+  fontWeight: 800,
+};
 
 export function RepoAnalysisDashboard() {
   const [repoDetails, setRepoDetails] =
@@ -132,13 +147,27 @@ export function RepoAnalysisDashboard() {
               <span className="metric-label">Language</span>
               <strong>{repoDetails.primaryLanguage}</strong>
             </div>
-            <div>
-              <span className="metric-label">Complexity</span>
-              <strong>{repoDetails.astMetrics.cyclomaticComplexity}</strong>
+            <div
+              style={primaryMetricTileStyle}
+              aria-label={`Complexity: ${repoDetails.astMetrics.cyclomaticComplexity}`}
+            >
+              <span className="metric-label" style={primaryMetricLabelStyle}>
+                Complexity
+              </span>
+              <strong style={primaryMetricValueStyle}>
+                {repoDetails.astMetrics.cyclomaticComplexity}
+              </strong>
             </div>
-            <div>
-              <span className="metric-label">Nesting Depth</span>
-              <strong>{repoDetails.astMetrics.maxNestingDepth}</strong>
+            <div
+              style={primaryMetricTileStyle}
+              aria-label={`Nesting Depth: ${repoDetails.astMetrics.maxNestingDepth}`}
+            >
+              <span className="metric-label" style={primaryMetricLabelStyle}>
+                Nesting Depth
+              </span>
+              <strong style={primaryMetricValueStyle}>
+                {repoDetails.astMetrics.maxNestingDepth}
+              </strong>
             </div>
             <div className={getRiskLevelTileClassName(riskLevel)}>
               <span className="metric-label">Risk Level</span>
