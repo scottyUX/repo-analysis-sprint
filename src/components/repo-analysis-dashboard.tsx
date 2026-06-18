@@ -186,7 +186,10 @@ export function RepoAnalysisDashboard() {
           <div className="smells-panel">
             <h3>AI Smells</h3>
             <div className="badge-row">
-              {renderAiSmellBadges(repoDetails.aiSmells)}
+              {/* TODO Intern 4: map aiSmells into red warning badges with JSDoc-documented rendering logic. */}
+              <span className="placeholder-badge">
+                {repoDetails.aiSmells.length} smells waiting to render
+              </span>
             </div>
           </div>
         ) : null}
