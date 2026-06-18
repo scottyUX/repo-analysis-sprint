@@ -39,22 +39,23 @@ export function RepoAnalysisDashboard() {
     useState<RepositoryAnalysisDetails | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [simulateFailure, setSimulateFailure] = useState(false);
 
-  function handleFetchDetails() {
+  async function handleFetchDetails() {
     setIsLoading(true);
     setErrorMessage(null);
+    setRepoDetails(null);
 
-    // TODO Intern 5: refactor this legacy promise chain to async/await.
-    fetchRepoDetails({ shouldFail: false })
-      .then((details) => {
-        window.setTimeout(() => {
-          setRepoDetails(details);
-          setIsLoading(false);
-        }, 300);
-      })
-      .then(() => {
-        console.info("Repository analysis loaded");
-      });
+    try {
+      const details = await fetchRepoDetails({ shouldFail: simulateFailure });
+      setRepoDetails(details);
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error ? error.message : "Simulated network failure",
+      );
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   const riskLevel = repoDetails
@@ -81,9 +82,20 @@ export function RepoAnalysisDashboard() {
             <p className="eyebrow">Repo Metrics</p>
             <h2>{repoDetails?.repositoryName ?? "Awaiting analysis"}</h2>
           </div>
-          <button disabled={isLoading} onClick={handleFetchDetails}>
-            {isLoading ? "Analyzing..." : "Fetch Repo Details"}
-          </button>
+          <div className="fetch-controls">
+            <label className="simulate-failure-toggle">
+              <input
+                checked={simulateFailure}
+                disabled={isLoading}
+                onChange={(event) => setSimulateFailure(event.target.checked)}
+                type="checkbox"
+              />
+              Simulate connection failure
+            </label>
+            <button disabled={isLoading} onClick={handleFetchDetails}>
+              {isLoading ? "Analyzing..." : "Fetch Repo Details"}
+            </button>
+          </div>
         </div>
 
         {errorMessage ? (
@@ -116,6 +128,8 @@ export function RepoAnalysisDashboard() {
               <strong>{riskLevel}</strong>
             </div>
           </div>
+        ) : isLoading ? (
+          <p className="empty-state">Loading metrics...</p>
         ) : (
           <p className="empty-state">
             Click the button to load nested mock repository metrics.
