@@ -1,0 +1,9 @@
+---
+description: "Prevents silent exceptions and empty catch statements"
+globs: ["**/*.ts"]
+alwaysApply: false
+---
+# Exception Specification & Safety Guards
+- You must NEVER generate or permit empty `catch` blocks. 
+- Every `catch` block must explicitly handle or log the error using a dedicated logger or reporter.
+- If an exception cannot be safely recovered, it must be thrown up the call stack to prevent silent system degradation.
