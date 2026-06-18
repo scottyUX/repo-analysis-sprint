@@ -1,4 +1,5 @@
 import { mockRepositoryDetails } from "./repo-analysis.mock";
+import { parseAstMetrics } from "./repo-analysis.parse";
 import type { RepositoryAnalysisDetails, RiskLevel } from "./repo-analysis.types";
 
 interface FetchRepoDetailsOptions {
@@ -17,7 +18,10 @@ export function fetchRepoDetails({
         return;
       }
 
-      resolve(mockRepositoryDetails);
+      resolve({
+        ...mockRepositoryDetails,
+        astMetrics: parseAstMetrics(mockRepositoryDetails.astMetrics),
+      });
     }, delayMs);
   });
 }
