@@ -17,11 +17,11 @@ function getAiSmellBadgeKey(smell: string, index: number): string {
 
 /**
  * Renders AI smell strings as red warning badges for the analysis card.
- * Returns null when there are no smells so the badge row stays empty and uncluttered.
+ * When the list is empty, shows a muted fallback message so the panel stays cohesive.
  */
 function renderAiSmellBadges(smells: string[]): ReactNode {
   if (smells.length === 0) {
-    return null;
+    return <p className="empty-state">No AI smells detected.</p>;
   }
 
   return smells.map((smell, index) => (
