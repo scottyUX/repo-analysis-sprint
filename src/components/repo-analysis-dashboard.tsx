@@ -1,11 +1,27 @@
 "use client";
 
-import { useState, type CSSProperties, type ReactNode } from "react";
-import type { RepositoryAnalysisDetails } from "@/lib/repo-analysis.types";
+import { useState, type CSSProperties, type ReactNode } from "react";import type {
+  AiSmell,
+  RepositoryAnalysisDetails,
+  RiskLevel,
+} from "@/lib/repo-analysis.types";
 import {
   calculateRiskLevel,
   fetchRepoDetails,
 } from "@/lib/repo-analysis.utils";
+
+/**
+ * Maps a computed risk level to tile-only CSS classes for color-coded status styling.
+ */
+function getRiskLevelTileClassName(riskLevel: RiskLevel): string {
+  const classByLevel: Record<RiskLevel, string> = {
+    Low: "risk-level-tile risk-level-low",
+    Medium: "risk-level-tile risk-level-medium",
+    High: "risk-level-tile risk-level-high",
+  };
+
+  return classByLevel[riskLevel];
+}
 
 /**
  * Produces a stable React list key for an AI smell badge.
@@ -19,7 +35,7 @@ function getAiSmellBadgeKey(smell: string, index: number): string {
  * Renders AI smell strings as red warning badges for the analysis card.
  * Returns null when there are no smells so the badge row stays empty and uncluttered.
  */
-function renderAiSmellBadges(smells: string[]): ReactNode {
+function renderAiSmellBadges(smells: AiSmell[]): ReactNode {
   if (smells.length === 0) {
     return null;
   }
@@ -55,22 +71,23 @@ export function RepoAnalysisDashboard() {
     useState<RepositoryAnalysisDetails | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [simulateFailure, setSimulateFailure] = useState(false);
 
-  function handleFetchDetails() {
+  async function handleFetchDetails() {
     setIsLoading(true);
     setErrorMessage(null);
+    setRepoDetails(null);
 
-    // TODO Intern 5: refactor this legacy promise chain to async/await.
-    fetchRepoDetails({ shouldFail: false })
-      .then((details) => {
-        window.setTimeout(() => {
-          setRepoDetails(details);
-          setIsLoading(false);
-        }, 300);
-      })
-      .then(() => {
-        console.info("Repository analysis loaded");
-      });
+    try {
+      const details = await fetchRepoDetails({ shouldFail: simulateFailure });
+      setRepoDetails(details);
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error ? error.message : "Simulated network failure",
+      );
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   const riskLevel = repoDetails
@@ -97,9 +114,20 @@ export function RepoAnalysisDashboard() {
             <p className="eyebrow">Repo Metrics</p>
             <h2>{repoDetails?.repositoryName ?? "Awaiting analysis"}</h2>
           </div>
-          <button disabled={isLoading} onClick={handleFetchDetails}>
-            {isLoading ? "Analyzing..." : "Fetch Repo Details"}
-          </button>
+          <div className="fetch-controls">
+            <label className="simulate-failure-toggle">
+              <input
+                checked={simulateFailure}
+                disabled={isLoading}
+                onChange={(event) => setSimulateFailure(event.target.checked)}
+                type="checkbox"
+              />
+              Simulate connection failure
+            </label>
+            <button disabled={isLoading} onClick={handleFetchDetails}>
+              {isLoading ? "Analyzing..." : "Fetch Repo Details"}
+            </button>
+          </div>
         </div>
 
         {errorMessage ? (
@@ -141,11 +169,13 @@ export function RepoAnalysisDashboard() {
                 {repoDetails.astMetrics.maxNestingDepth}
               </strong>
             </div>
-            <div>
+            <div className={getRiskLevelTileClassName(riskLevel)}>
               <span className="metric-label">Risk Level</span>
-              <strong>{riskLevel}</strong>
+              <strong className="risk-level-value">{riskLevel}</strong>
             </div>
           </div>
+        ) : isLoading ? (
+          <p className="empty-state">Loading metrics...</p>
         ) : (
           <p className="empty-state">
             Click the button to load nested mock repository metrics.

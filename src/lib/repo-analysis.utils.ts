@@ -1,4 +1,5 @@
 import { mockRepositoryDetails } from "./repo-analysis.mock";
+import { parseAstMetrics } from "./repo-analysis.parse";
 import type { RepositoryAnalysisDetails, RiskLevel } from "./repo-analysis.types";
 
 interface FetchRepoDetailsOptions {
@@ -17,7 +18,10 @@ export function fetchRepoDetails({
         return;
       }
 
-      resolve(mockRepositoryDetails);
+      resolve({
+        ...mockRepositoryDetails,
+        astMetrics: parseAstMetrics(mockRepositoryDetails.astMetrics),
+      });
     }, delayMs);
   });
 }
@@ -26,9 +30,11 @@ export function calculateRiskLevel(
   cyclomaticComplexity: number,
   maxNestingDepth: number,
 ): RiskLevel {
-  // TODO Intern 3: replace this placeholder with threshold-based risk logic.
-  void cyclomaticComplexity;
-  void maxNestingDepth;
-
+  if (cyclomaticComplexity > 10 || maxNestingDepth > 4) {
+    return "High";
+  }
+  if (cyclomaticComplexity > 5 || maxNestingDepth > 2) {
+    return "Medium";
+  }
   return "Low";
 }
