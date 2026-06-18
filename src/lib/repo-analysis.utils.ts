@@ -30,11 +30,9 @@ export function calculateRiskLevel(
   cyclomaticComplexity: number,
   maxNestingDepth: number,
 ): RiskLevel {
-  if (cyclomaticComplexity > 10 || maxNestingDepth > 4) {
-    return "High";
-  }
-  if (cyclomaticComplexity > 5 || maxNestingDepth > 2) {
-    return "Medium";
-  }
+  // TODO Intern 3: replace this placeholder with threshold-based risk logic.
+  void cyclomaticComplexity;
+  void maxNestingDepth;
+
   return "Low";
 }
